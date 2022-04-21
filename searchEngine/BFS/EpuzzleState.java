@@ -1,3 +1,156 @@
-public class EPuzzleState {
+import java.util.*;
+
+public class EPuzzleState extends SearchState {
+
+    private int[][] board;
+    private int t1;
+    private int t2;
+    private int t3;
+    private int t4;
+    private int t5;
+    private int t6;
+    private int t7;
+    private int t8;
+    private int t9;
+    private int[][] target;
+
+    public EPuzzleState(int[][] starting_board, int[][] tar){
+        
+        target = tar;
+        board = starting_board;
+        t1 = starting_board[0][0];
+        t2 = starting_board[0][1];;
+        t3 = starting_board[0][2];;
+        t4 = starting_board[1][0];;
+        t5 = starting_board[1][1];;
+        t6 = starting_board[1][2];;
+        t7 = starting_board[2][0];;
+        t8 = starting_board[2][1];;
+        t9 = starting_board[2][2];;
+
+    }
+
+    public int[][] getBoard(){
+        return board;
+    }
+
+
+
+    public boolean goalPredicate(Search searcher) {
+
+        EPuzzleSearch esearcher = (EPuzzleSearch) searcher;
+        int[][] tar = esearcher.getTarget(); // get target board
+        return ((board == tar) || (board == tar));
+      }
+
+
+    public ArrayList<SearchState> getSuccessors(Search searcher){
+
+        EPuzzleSearch esearcher = (EPuzzleSearch) searcher;
+        ArrayList<EPuzzleState> plist = new ArrayList<EPuzzleState>(); // the list of tile spaces
+        ArrayList<SearchState> slis = new ArrayList<SearchState>();
+        
+        for (int i=0; i<board.length; i++) {
+
+
+            for (int j=0; j<board[i].length; j++){
+
+                int[][] temp_board = board;
+
+                if ((i-1)>=0){ //Checks Up
+                    
+                    if (board[i-1][j] == 0){
+                        temp_board[i-1][j] = board[i][j];
+                        temp_board[i][j] = 0;
+                        EPuzzleState t = new EPuzzleState(temp_board, target);
+                        System.out.print("Moved Up: ");
+                        System.out.println(t.toString());
+                        plist.add(t);
+                        temp_board = board;
+
+                    }
+                    
+                    
+                }
+
+
+
+                if ((i+1)<=2){ //Checks Down
+                    
+                    if (board[i+1][j] == 0){ 
+                        temp_board[i+1][j] = board[i][j];
+                        temp_board[i][j] = 0;
+                        EPuzzleState t = new EPuzzleState(temp_board, target);
+                        System.out.print("Moved Down: ");
+                        System.out.println(t.toString());
+                        plist.add(t);
+                        temp_board = board;
+
+                    }
+                    
+                }
+
+                if ((j-1)>=0){ //Checks Left
+                    
+                    if (board[i][j-1] == 0){ 
+                        System.out.println("l");
+                        temp_board[i][j-1] = board[i][j];
+                        temp_board[i][j] = 0;
+                        EPuzzleState t = new EPuzzleState(temp_board, target);
+                        System.out.print("Moved Left: ");
+                        System.out.println(t.toString());
+                        plist.add(t);
+                        temp_board = board;
+
+                    }
+                    
+                }
+
+
+                
+                if ((j+1)<=2){ //Checks Right
+                    
+                    if (board[i][j+1] == 0){
+
+                        temp_board[i][j+1] = board[i][j];
+                        temp_board[i][j] = 0;
+                        EPuzzleState t = new EPuzzleState(temp_board, target);
+                        System.out.print("Moved Right: ");
+                        System.out.println(t.toString());
+                        plist.add(t);
+                        temp_board = board;
+
+                    }
+                }
+                    
+
+            }
+
+        }
+
+        System.out.print("X");
+        System.out.println(plist.toString());
+
+        for (EPuzzleState t : plist){
+            slis.add((SearchState)t);
+        }
     
+        return slis;
+
+    }
+
+    boolean sameState(SearchState n2){
+        EPuzzleState n1 = (EPuzzleState)n2;
+        return (target == n1.getBoard());
+
+    }
+
+    public String toString(){
+        String s1 = "";
+        for (int[] line: board){
+            s1 = s1 + line.toString() + "\n";
+        }
+        return s1;
+    }
+
 }
