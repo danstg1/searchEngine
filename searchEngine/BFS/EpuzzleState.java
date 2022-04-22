@@ -1,3 +1,4 @@
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class EPuzzleState extends SearchState {
@@ -40,7 +41,18 @@ public class EPuzzleState extends SearchState {
 
         EPuzzleSearch esearcher = (EPuzzleSearch) searcher;
         int[][] tar = esearcher.getTarget(); // get target board
-        return ((board == tar) || (board == tar));
+
+        boolean matching = true;
+        for (int i=0; i<board.length; i++){
+            for (int j=0; j<board.length; j++){
+                if (!(board[i][j]==tar[i][j])){
+                    matching = false;
+                }
+            }
+        }
+        
+        return (matching);
+
       }
 
 
@@ -55,18 +67,22 @@ public class EPuzzleState extends SearchState {
 
             for (int j=0; j<board[i].length; j++){
 
-                int[][] temp_board = board;
 
                 if ((i-1)>=0){ //Checks Up
                     
                     if (board[i-1][j] == 0){
+
+                        int[][] temp_board = new int[board.length][board[0].length];
+                        for (int k=0; k < board.length; k++){
+                            for (int l=0; l<board[i].length; l++){
+                                temp_board[k][l] = board[k][l];
+                            }
+                        }
                         temp_board[i-1][j] = board[i][j];
                         temp_board[i][j] = 0;
-                        EPuzzleState t = new EPuzzleState(temp_board, target);
-                        System.out.print("Moved Up: ");
-                        System.out.println(t.toString());
+                        EPuzzleState t = new EPuzzleState(temp_board.clone(), target);
                         plist.add(t);
-                        temp_board = board;
+
 
                     }
                     
@@ -74,17 +90,21 @@ public class EPuzzleState extends SearchState {
                 }
 
 
-
                 if ((i+1)<=2){ //Checks Down
                     
                     if (board[i+1][j] == 0){ 
+                        
+                        int[][] temp_board = new int[board.length][board[0].length];
+                        for (int k=0; k < board.length; k++){
+                            for (int l=0; l<board[i].length; l++){
+                                temp_board[k][l] = board[k][l];
+                            }
+                        }
                         temp_board[i+1][j] = board[i][j];
                         temp_board[i][j] = 0;
-                        EPuzzleState t = new EPuzzleState(temp_board, target);
-                        System.out.print("Moved Down: ");
-                        System.out.println(t.toString());
+                        EPuzzleState t = new EPuzzleState(temp_board.clone(), target);
                         plist.add(t);
-                        temp_board = board;
+                        
 
                     }
                     
@@ -93,14 +113,19 @@ public class EPuzzleState extends SearchState {
                 if ((j-1)>=0){ //Checks Left
                     
                     if (board[i][j-1] == 0){ 
-                        System.out.println("l");
+
+                        int[][] temp_board = new int[board.length][board[0].length];
+                        for (int k=0; k < board.length; k++){
+                            for (int l=0; l<board[i].length; l++){
+                                temp_board[k][l] = board[k][l];
+                            }
+                        }
+
                         temp_board[i][j-1] = board[i][j];
                         temp_board[i][j] = 0;
-                        EPuzzleState t = new EPuzzleState(temp_board, target);
-                        System.out.print("Moved Left: ");
-                        System.out.println(t.toString());
+                        EPuzzleState t = new EPuzzleState(temp_board.clone(), target);
                         plist.add(t);
-                        temp_board = board;
+                        
 
                     }
                     
@@ -112,13 +137,18 @@ public class EPuzzleState extends SearchState {
                     
                     if (board[i][j+1] == 0){
 
+                        int[][] temp_board = new int[board.length][board[0].length];
+                        for (int k=0; k < board.length; k++){
+                            for (int l=0; l<board[i].length; l++){
+                                temp_board[k][l] = board[k][l];
+                            }
+                        }
+
                         temp_board[i][j+1] = board[i][j];
                         temp_board[i][j] = 0;
-                        EPuzzleState t = new EPuzzleState(temp_board, target);
-                        System.out.print("Moved Right: ");
-                        System.out.println(t.toString());
+                        EPuzzleState t = new EPuzzleState(temp_board.clone(), target);
                         plist.add(t);
-                        temp_board = board;
+                        
 
                     }
                 }
@@ -128,11 +158,10 @@ public class EPuzzleState extends SearchState {
 
         }
 
-        System.out.print("X");
-        System.out.println(plist.toString());
 
-        for (EPuzzleState t : plist){
-            slis.add((SearchState)t);
+        for (EPuzzleState p : plist){
+            slis.add(p);
+
         }
     
         return slis;
@@ -147,10 +176,16 @@ public class EPuzzleState extends SearchState {
 
     public String toString(){
         String s1 = "";
-        for (int[] line: board){
-            s1 = s1 + line.toString() + "\n";
+        for (int[] line: this.board){
+            for (int t: line){
+                s1 = s1+ String.valueOf(t);
+            }
+            
+            s1 = s1 + "\n";
+            
         }
         return s1;
     }
+
 
 }

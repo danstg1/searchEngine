@@ -44,8 +44,6 @@ public abstract class Search {
 			// print contents of open
 			System.out.println("iteration no " + iterationCount);
 			System.out.println("open is");
-	
-
 			for (SearchNode nn : open) {
 				String nodestr = nn.toString();
 				System.out.println(nodestr);
@@ -77,8 +75,6 @@ public abstract class Search {
 
 		// get all successor nodes
 		successorNodes = currentNode.getSuccessors(this); // pass search instance
-		System.out.print("A");
-		System.out.println(successorNodes);
 
 		// filter out unwanted - Dynamic Programming check
 		vetSuccessors();

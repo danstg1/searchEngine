@@ -26,4 +26,8 @@ public abstract class SearchState {
     */
     abstract boolean sameState(SearchState n2);
 
+    public char[] getSuccessors(Object ePuzzleSearch) {
+        return null;
+    }
+
 }
